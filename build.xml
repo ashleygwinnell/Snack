@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project default="run" name="Snack">
+  
+	<property name="name" value="Snack" />
+	<property name="root.dir" value="." />
+	<property name="src.dir" value="src" />
+	<property name="classes.dir" value="classes" />
+	<property name="files.dir" value="files" />
+	<property name="javadoc.dir" value="docs" />
+  
+	<target name="run" depends="compile">
+		<java fork="true" classname="Snack">
+            <classpath>
+                <pathelement path="${classes.dir}" />
+            </classpath>
+        </java>
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac destdir="${classes.dir}" debug="on" includeantruntime="false">
+			<src path="${src.dir}" />
+		</javac>
+		<copy todir="${classes.dir}/files">
+            <fileset dir="${files.dir}" />
+        </copy>
+        <copy todir="${classes.dir}/images">
+            <fileset dir="images" />
+        </copy>
+	</target>
+	
+	<target name="archive" depends="compile">
+		<jar destfile="${root.dir}/${name}.jar" manifest="${files.dir}/manifest.txt">
+            <fileset dir="${classes.dir}" />
+        </jar>
+		
+	</target>
+	
+	<target name="clean">
+		<delete includeEmptyDirs="true">
+            <fileset dir="${classes.dir}" includes="**/*" defaultExcludes="no" />
+        </delete>
+        <delete file="${root.dir}/Sunshine.jar" />
+	</target>
+	
+	<target name="javadoc">
+		<javadoc sourcepath="${src.dir}" destdir="${javadoc.dir}" author="true" version="true" windowtitle="Sunshine: Cities and Temperatures JavaDoc.">
+			<fileset dir="src" defaultexcludes="yes">
+				<include name="*/**"/>
+			</fileset>
+
+			
+			<doctitle><![CDATA[<h1>Snack Calculator.</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2009 Ashley Gwinnell. All Rights Reserved.</i>]]></bottom>
+			<link href="http://www.ashleygwinnell.co.uk"/>
+			
+		</javadoc>
+	</target>
+	
+</project>
